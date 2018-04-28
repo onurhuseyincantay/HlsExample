@@ -141,4 +141,64 @@ class AssetPersistenceManager: NSObject {
 
 extension AssetPersistenceManager:AVAssetDownloadDelegate{
     
+    func urlSession(_ session: URLSession, aggregateAssetDownloadTask: AVAggregateAssetDownloadTask, willDownloadTo location: URL) {
+        willDownloadToUrlMap[aggregateAssetDownloadTask] = location
+    }
+    func urlSession(_ session: URLSession, aggregateAssetDownloadTask: AVAggregateAssetDownloadTask, didCompleteFor mediaSelection: AVMediaSelection) {
+        guard let asset = activeDownloadsMap[aggregateAssetDownloadTask] else {return}
+        var userInfo = Dictionary<String,Any>()
+        userInfo[Asset.Keys.name] = asset.stream.name
+        aggregateAssetDownloadTask.taskDescription = asset.stream.name
+        aggregateAssetDownloadTask.resume()
+        userInfo[Asset.Keys.downloadState] = Asset.DownloadState.downloading.rawValue
+        userInfo[Asset.Keys.downloadSelectionDisplayName] = displayNamesForSelectedMediaOptions(mediaSelection)
+        NotificationCenter.default.post(name: .AssetDownloadStateChanged, object: nil, userInfo: userInfo)
+    }
+    func urlSession(_ session: URLSession, aggregateAssetDownloadTask: AVAggregateAssetDownloadTask, didLoad timeRange: CMTimeRange, totalTimeRangesLoaded loadedTimeRanges: [NSValue], timeRangeExpectedToLoad: CMTimeRange, for mediaSelection: AVMediaSelection) {
+        guard let asset = activeDownloadsMap[aggregateAssetDownloadTask] else { return }
+        var percentComplete = 0.0
+        for value in loadedTimeRanges{
+            let loadedTimeRange:CMTimeRange = value.timeRangeValue
+            percentComplete += CMTimeGetSeconds(loadedTimeRange.duration) / CMTimeGetSeconds(timeRangeExpectedToLoad.duration)
+        }
+        var userInfo = Dictionary<String,Any>()
+        userInfo[Asset.Keys.name] = asset.stream.name
+        userInfo[Asset.Keys.percentDownloaded] = percentComplete
+        NotificationCenter.default.post(name: .AssetDownloadProgress, object: nil, userInfo: userInfo)
+    }
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        let userDefaults = UserDefaults.standard
+        guard let task = task as? AVAggregateAssetDownloadTask,let asset = activeDownloadsMap.removeValue(forKey: task) else { return }
+        guard let downloadUrl = willDownloadToUrlMap.removeValue(forKey: task) else { return }
+        var userInfo = Dictionary<String,Any>()
+        userInfo[Asset.Keys.name] = asset.stream.name
+        if let error = error as NSError?{
+            switch(error.domain,error.code){
+            case(NSURLErrorDomain,NSURLErrorCancelled):
+                guard let localFileLocation = localAssetForStream(withName: asset.stream.name)?.urlAsset.url else{return}
+                do{
+                    try FileManager.default.removeItem(at: localFileLocation)
+                    userDefaults.removeObject(forKey: asset.stream.name)
+                }catch{
+                    print("An error occured trying to delete the contents on disk for \(asset.stream.name): \(error)")
+                }
+                userInfo[Asset.Keys.downloadState] = Asset.DownloadState.notDownloaded.rawValue
+            case(NSURLErrorDomain,NSURLErrorUnknown):
+                // simulator içerisinde HLS Stream test edilemezmiş...
+                fatalError("Downloading HLS Streams is not supported in the simulator")
+            default:
+                fatalError("An unexpected error occured \(error.domain)")
+            }
+        }else{
+            do{
+                let bookmark = try downloadUrl.bookmarkData()
+                userDefaults.set(bookmark, forKey: asset.stream.name)
+            }catch{
+                print("Failed to Create bookmarkData for download  URl.")
+            }
+            userInfo[Asset.Keys.downloadState] = Asset.DownloadState.downloaded.rawValue
+            userInfo[Asset.Keys.downloadSelectionDisplayName] = ""
+        }
+      NotificationCenter.default.post(name: .AssetDownloadStateChanged, object: nil, userInfo: userInfo)
+    }
 }
