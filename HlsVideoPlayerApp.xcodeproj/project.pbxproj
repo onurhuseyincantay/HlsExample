@@ -11,6 +11,7 @@
 		8FF335FF2094814700882DC9 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF335FE2094814700882DC9 /* Asset.swift */; };
 		8FF33601209482C500882DC9 /* StreamListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF33600209482C500882DC9 /* StreamListManager.swift */; };
 		8FF336032094847400882DC9 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF336022094847400882DC9 /* Stream.swift */; };
+		8FF336052094889700882DC9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF336042094889700882DC9 /* Extensions.swift */; };
 		8FF86746208F733F00E1BCC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF86745208F733F00E1BCC1 /* AppDelegate.swift */; };
 		8FF86748208F733F00E1BCC1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF86747208F733F00E1BCC1 /* ViewController.swift */; };
 		8FF8674B208F733F00E1BCC1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8FF86749208F733F00E1BCC1 /* Main.storyboard */; };
@@ -23,6 +24,7 @@
 		8FF335FE2094814700882DC9 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		8FF33600209482C500882DC9 /* StreamListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamListManager.swift; sourceTree = "<group>"; };
 		8FF336022094847400882DC9 /* Stream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
+		8FF336042094889700882DC9 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8FF86742208F733F00E1BCC1 /* HlsVideoPlayerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HlsVideoPlayerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FF86745208F733F00E1BCC1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8FF86747208F733F00E1BCC1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 				8FF8674C208F734100E1BCC1 /* Assets.xcassets */,
 				8FF8674E208F734100E1BCC1 /* LaunchScreen.storyboard */,
 				8FF86751208F734100E1BCC1 /* Info.plist */,
+				8FF336042094889700882DC9 /* Extensions.swift */,
 			);
 			path = HlsVideoPlayerApp;
 			sourceTree = "<group>";
@@ -169,6 +172,7 @@
 				8FF335FF2094814700882DC9 /* Asset.swift in Sources */,
 				8FF86746208F733F00E1BCC1 /* AppDelegate.swift in Sources */,
 				8FF33601209482C500882DC9 /* StreamListManager.swift in Sources */,
+				8FF336052094889700882DC9 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
