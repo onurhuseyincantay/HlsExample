@@ -12,4 +12,5 @@ extension Notification.Name{
     static let AssetDownloadProgress = Notification.Name(rawValue: "AssetDownloadProgressNotification")
     static let AssetDownloadStateChanged = Notification.Name(rawValue: "AssetDownloadStateChangedNotification")
     static let AssetPersistenceManagerDidRestoreState = Notification.Name(rawValue: "AssetPersistenceManagerDidRestoreStateNotification")
+    static let AssetListManagerDidLoad = Notification.Name(rawValue: "AssetListManagerDidLoadNotification")
 }
