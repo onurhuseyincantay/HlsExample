@@ -32,6 +32,9 @@ class AssetPersistenceManager: NSObject {
                 guard let assetDownloadTask = task as? AVAggregateAssetDownloadTask,let assetName = task.taskDescription else{
                     return
                 }
+                let stream = StreamListManager.shared.stream(withName: assetName)
+                let urlAsset = assetDownloadTask.urlAsset
+                let asset = Asset(stream: stream, urlAsset: urlAsset)
                 
             }
         }
